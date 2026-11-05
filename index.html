@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QR Studio — генератор QR-кодов</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header class="topbar">
+    <div class="logo">
+      <span class="logo-mark">QR</span>
+      <div>
+        <h1>QR Studio</h1>
+        <p>онлайн-генератор без регистрации</p>
+      </div>
+    </div>
+    <button id="historyBtn" class="btn ghost">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/><path d="M12 7v5l3 3"/></svg>
+      История
+    </button>
+  </header>
+
+  <main class="layout">
+
+    <!-- ===== РЕДАКТОР ===== -->
+    <section class="card">
+      <h2>Редактор</h2>
+
+      <!-- Содержимое -->
+      <div class="block">
+        <h3>Содержимое</h3>
+        <div class="tabs" id="typeTabs">
+          <button data-type="text" class="active">Текст</button>
+          <button data-type="url">Ссылка</button>
+          <button data-type="image">Изображение</button>
+          <button data-type="wifi">Wi-Fi</button>
+        </div>
+
+        <div class="field" data-field="text">
+          <textarea id="fieldText" rows="4" placeholder="Введите текст…"></textarea>
+        </div>
+        <div class="field hidden" data-field="url">
+          <input id="fieldUrl" type="text" placeholder="https://example.com">
+        </div>
+        <div class="field hidden" data-field="image">
+          <input id="fieldImage" type="text" placeholder="https://example.com/photo.jpg">
+          <small>Ссылка на изображение будет закодирована в QR</small>
+        </div>
+        <div class="field hidden" data-field="wifi">
+          <label>SSID (имя сети)
+            <input id="wifiSsid" type="text" placeholder="MyNetwork">
+          </label>
+          <label>Пароль
+            <input id="wifiPass" type="text" placeholder="пароль">
+          </label>
+          <div class="row">
+            <label>Шифрование
+              <select id="wifiEnc">
+                <option value="WPA">WPA / WPA2</option>
+                <option value="WEP">WEP</option>
+                <option value="nopass">Без пароля</option>
+              </select>
+            </label>
+            <label class="check">
+              <input id="wifiHidden" type="checkbox"> Скрытая сеть
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Внешний вид -->
+      <div class="block">
+        <h3>Внешний вид</h3>
+        <div class="row">
+          <label class="color">
+            <span>Цвет точек</span>
+            <input id="dotColor" type="color" value="#000000">
+          </label>
+          <label class="color">
+            <span>Фон</span>
+            <input id="bgColor" type="color" value="#ffffff">
+          </label>
+          <button id="swapColors" class="mini" title="Поменять местами">⇄</button>
+        </div>
+      </div>
+
+      <!-- Формат (отдельный блок) -->
+      <div class="block">
+        <h3>Формат</h3>
+        <label class="range">
+          <span>Размер: <b id="sizeVal">512</b> px</span>
+          <input id="size" type="range" min="256" max="1024" step="32" value="512">
+        </label>
+        <div class="row">
+          <label>Коррекция ошибок
+            <select id="ecc">
+              <option value="L">L — 7%</option>
+              <option value="M" selected>M — 15%</option>
+              <option value="Q">Q — 25%</option>
+              <option value="H">H — 30%</option>
+            </select>
+          </label>
+          <label>Поля
+            <select id="margin">
+              <option value="0">Нет</option>
+              <option value="2" selected>2</option>
+              <option value="4">4</option>
+              <option value="8">8</option>
+            </select>
+          </label>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button id="generateBtn" class="btn primary">Сгенерировать QR</button>
+        <button id="resetBtn" class="btn ghost">Сбросить</button>
+      </div>
+    </section>
+
+    <!-- ===== ПРЕДПРОСМОТР ===== -->
+    <section class="card">
+      <h2>Предпросмотр</h2>
+      <div class="qr-frame">
+        <canvas id="qrCanvas"></canvas>
+        <div id="qrPlaceholder">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3h-3zM20 14h1M14 20h1M20 20h1M17 17h4v4h-4z"/></svg>
+          <p>Здесь появится ваш QR-код</p>
+        </div>
+      </div>
+      <div class="actions">
+        <div class="save-wrap">
+          <button id="saveBtn" class="btn primary">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg>
+            Сохранить
+          </button>
+          <div id="formatMenu" class="format-menu hidden">
+            <button data-fmt="png"><b>PNG</b><small>без потерь, лучший выбор</small></button>
+            <button data-fmt="jpeg"><b>JPEG</b><small>меньший размер файла</small></button>
+            <button data-fmt="webp"><b>WebP</b><small>современный, компактный</small></button>
+          </div>
+        </div>
+        <button id="openContentBtn" class="btn ghost">Открыть содержимое</button>
+      </div>
+    </section>
+  </main>
+
+  <!-- ===== МОДАЛКА ИСТОРИИ ===== -->
+  <div id="historyModal" class="modal hidden">
+    <div class="modal-box">
+      <header>
+        <h2>История генераций</h2>
+        <button class="close" data-close="historyModal">✕</button>
+      </header>
+      <div id="historyList" class="history-list"></div>
+      <div class="modal-foot">
+        <button id="clearHistory" class="btn danger">Очистить всё</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== МОДАЛКА СОДЕРЖИМОГО ===== -->
+  <div id="contentModal" class="modal hidden">
+    <div class="modal-box small">
+      <header>
+        <h2>Содержимое кода</h2>
+        <button class="close" data-close="contentModal">✕</button>
+      </header>
+      <pre id="contentText"></pre>
+      <div class="modal-foot">
+        <button id="copyContent" class="btn ghost">Копировать</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast hidden"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
