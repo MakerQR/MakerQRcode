@@ -3,6 +3,12 @@
   --accent:#7c5cff; --accent2:#22d3ee; --radius:16px;
 }
 *{box-sizing:border-box}
+html{color-scheme:dark}
+[hidden]{display:none!important}
+select option,select optgroup{background:#11132a;color:#eceefc}
+input[type=file]{color:var(--text)}
+input[type=file]::file-selector-button{margin-right:10px;padding:6px 12px;border-radius:8px;border:1px solid var(--line);background:#232650;color:var(--text);cursor:pointer;font:inherit}
+::placeholder{color:#6f76a6;opacity:1}
 body{
   margin:0; font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif; color:var(--text);
   background:radial-gradient(900px 500px at 10% -10%,#2b1d6b55,transparent),
@@ -59,14 +65,14 @@ input[type=color]{width:64px;height:40px;padding:2px;border-radius:10px;border:1
 .menu{position:absolute;top:calc(100% + 6px);left:0;right:0;background:#1d2040;border:1px solid var(--line);border-radius:12px;overflow:hidden;z-index:5;box-shadow:0 10px 30px #000a}
 .menu button{display:block;width:100%;text-align:left;padding:10px 16px;background:none;border:0;color:var(--text);font:inherit;cursor:pointer}
 .menu button:hover{background:#7c5cff33}
-.btn:disabled,.menu[hidden]{opacity:.5;cursor:not-allowed}
+.btn:disabled{opacity:.5;cursor:not-allowed}
 
 dialog{background:var(--card);color:var(--text);border:1px solid var(--line);border-radius:var(--radius);padding:22px;width:min(520px,92vw);box-shadow:0 20px 60px #000b}
 dialog::backdrop{background:#000a;backdrop-filter:blur(3px)}
 .dlg-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
 .dlg-head h3{margin:0}
 .x{background:none;border:0;color:var(--muted);font-size:1.2rem;cursor:pointer}
-.content{white-space:pre-wrap;word-break:break-word;background:#11132a;border:1px solid var(--line);border-radius:10px;padding:14px;max-height:50vh;overflow:auto;font:inherit}
+.content{color:var(--text);white-space:pre-wrap;word-break:break-word;background:#11132a;border:1px solid var(--line);border-radius:10px;padding:14px;max-height:50vh;overflow:auto;font:inherit}
 
 .hist{display:grid;gap:10px;max-height:55vh;overflow:auto}
 .hist-item{display:flex;align-items:center;gap:10px;background:#11132a;border:1px solid var(--line);border-radius:12px;padding:10px 12px}
