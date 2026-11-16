@@ -117,6 +117,7 @@ function render(data, s) {
 }
 
 function generate() {
+  if (typeof QRCodeStyling === 'undefined') return toast('Не загрузилась библиотека QR. Проверьте интернет и обновите страницу (Ctrl+F5)');
   const data = buildData(draft.type, vals);
   if (!data) return toast('Заполните данные для QR-кода');
   render(data, draft);
